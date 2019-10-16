@@ -1,0 +1,92 @@
+.atas {
+    position: fixed;
+    top: 0px;left: 0px;right: 0px;
+    height: 55px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #095e6a;
+    z-index: 2;
+}
+.atas .icon {
+    float: left;
+    margin: 0;
+    margin-left: 5%;
+    width: 55px;
+}
+.atas .icon img {
+    margin: 0;
+    width: 100%;
+    height: 55px;
+    border-radius: 200px;
+}
+.atas h1 {
+    float: left;
+    margin: 0;
+    margin-left: 2.5%;
+    padding-top: 14px;
+    font-size: 24px;
+}
+.atas .menu {
+    float: right;
+    margin-right: 5%;
+    position: relative;
+}
+.atas a {
+    text-decoration: none;
+    color: #fff;
+}
+.atas li {
+    float: left;
+    list-style: none;
+    line-height: 55px;
+    padding: 0px 35px;
+}
+
+.menu .avatar {
+    width: 55px;
+    height: 55px;
+}
+.profile .menu-content {
+    position: absolute;
+    right: 5%;top: 58px;
+    width: 200px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #fff;
+    transition: 0.4s;
+    display: none;
+}
+.menu:hover .menu-content { display: block; }
+.profile li {
+    color: #444;
+    line-height: 40px;
+    float: none;
+}
+.profile li:hover {
+    background-color: #f15b2d;
+    color: #fff;
+    
+}
+
+.container {
+    position: absolute;
+    top: 145px;left: 5%;right: 5%;
+}
+.container .title.index { font-size: 50px;line-height: 70px; }
+.container .thumbnail img {
+    width: 100%;
+}
+.container .featured h3 {
+    font-size: 23px;
+    line-height: 36px;
+    margin: 10px 0px 5px 0px;
+}
+.container .featured .author {
+    line-height: 40px;
+    margin-top: 15px;
+}
+.container .featured .author img {
+    width: 40px;
+    height: 40px;
+    border-radius: 90px;
+}

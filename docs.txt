@@ -1,0 +1,10 @@
+Database table :
+admin (id, name, email, password)
+users (id, name, email, password, photo, payment)
+class (id, user_id, title, description, cover, tag)
+materials (id, class_id, title)
+tags (id, tags, used)
+comments (id, user_id, class_id, comment)
+learn (id, user_id, class_id, status, evidence)
+
+Us
