@@ -5,6 +5,20 @@
 </style>
 @endsection
 
+@php
+    function toIdr($angka) {
+        return 'Rp. '.strrev(implode('.',str_split(strrev(strval($angka)),3)));
+    }
+@endphp
+
+<div class="lebar-100">
+    <h1 class="d-inline-block">{{ $classData->title }}</h1>
+    <p class="teks-transparan">
+        {{ toIdr($availableToPayout->sum('to_pay')) }} tersedia untuk diambil. 
+        <a href="{{ route('payout.claim', $classData->id) }}">Tarik dana!</a>
+    </p>
+</div>
+
 <div class="row mt-2 mb navigation">
     <div class="bag lebar-33 rata-tengah">
         <a href="{{ route('kelas.material', $classData->id) }}">

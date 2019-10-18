@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use \App\Http\Controllers\ClassController as ClassCtrl;
 use \App\Http\Controllers\LearnController as LearnCtrl;
+use \App\Http\Controllers\PayoutController as PayoutCtrl;
 use \App\Http\Controllers\MaterialController as MaterialCtrl;
 
 class UserController extends Controller
@@ -96,15 +97,21 @@ class UserController extends Controller
     public function manageMaterial($classId) {
         $materials = MaterialCtrl::getMaterialClass($classId);
         $classData = ClassCtrl::info($classId);
+        $availableToPayout = LearnCtrl::getAvailableToPayout($classId);
+
         return view('pengajar.kelas.material')->with([
             'materials' => $materials,
             'classData' => $classData,
+            'availableToPayout' => $availableToPayout,
         ]);
     }
     public function classSettings($classId) {
         $classData = ClassCtrl::info($classId);
+        $availableToPayout = LearnCtrl::getAvailableToPayout($classId);
+
         return view('pengajar.kelas.settings')->with([
-            'classData' => $classData
+            'classData' => $classData,
+            'availableToPayout' => $availableToPayout
         ]);
     }
     public function uploadMaterialPage($classId) {
@@ -114,9 +121,21 @@ class UserController extends Controller
     public function classParticipant($classId) {
         $classData = ClassCtrl::info($classId);
         $learnerData = LearnCtrl::getLearner($classId);
+        $availableToPayout = LearnCtrl::getAvailableToPayout($classId);
+
         return view('pengajar.kelas.participant')->with([
             'classData' => $classData,
             'participants' => $learnerData,
+            'availableToPayout' => $availableToPayout,
+        ]);
+    }
+    public function earning() {
+        $myData = $this->me();
+        $payouts = PayoutCtrl::mine($myData->id);
+
+        return view('pengajar.earning')->with([
+            'myData' => $myData,
+            'payouts' => $payouts,
         ]);
     }
 }

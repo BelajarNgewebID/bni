@@ -20,7 +20,7 @@ body {
 h1,h2,h3,h4,h5,h6 {
     font-family: ProBold;
 }
-a { text-decoration: none; }
+a { text-decoration: none;color: #f15b2d; }
 p { font-family: ProReg;font-size: 18px;  }
 b { font-family: ProBold; }
 

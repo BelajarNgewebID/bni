@@ -13,6 +13,16 @@ use \App\Http\Controllers\InvoiceController as InvCtrl;
 
 class LearnController extends Controller
 {
+    public static function getAvailableToPayout($classId, $toGet = NULL) {
+        if($toGet == null) {
+            $toGet = ['id','to_pay'];
+        }
+        $learn = Learn::where([
+            ['class_id', $classId],
+            ['is_payout', 0]
+        ])->get($toGet);
+        return $learn;
+    }
     public static function getUnconfirm() {
         $data = Learn::where([
             ['status', 2]

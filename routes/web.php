@@ -50,6 +50,10 @@ Route::group(['prefix' => 'kelas'], function() {
     Route::delete('{id}/delete', 'ClassController@delete')->name('kelas.delete');
 });
 
+Route::group(['prefix' => 'payout'], function() {
+    Route::get('{id}/claim', 'PayoutController@claim')->name('payout.claim');
+});
+
 Route::group(['prefix' => 'invoice'], function() {
     Route::get('/', 'InvoiceController@mine')->name('invoice')->middleware('User');
     Route::get('/selesai-bayar', 'InvoiceController@done')->name('invoice.done')->middleware('User');

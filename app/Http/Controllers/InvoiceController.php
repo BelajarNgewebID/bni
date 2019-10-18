@@ -25,8 +25,6 @@ class InvoiceController extends Controller
             ['to_pay', '>', 0]
         ])->with('material')->get();
 
-        // return dd($data);
-
         return view('user.invoice')->with([
             'inv' => $data,
             'myData' => $myData,

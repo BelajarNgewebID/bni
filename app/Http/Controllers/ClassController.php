@@ -34,8 +34,12 @@ class ClassController extends Controller
     public static function myClass($userId) {
         return Kelas::where('user_id', $userId)->get();
     }
-    public static function info($classId) {
-        return Kelas::where('id', $classId)->first();
+    public static function info($classId, $relationship = NULL) {
+        $query = Kelas::where('id', $classId);
+        if($relationship != null) {
+            $query = $query->with($relationship);
+        }
+        return $query->first();
     }
     public function store(Request $req) {
         $myData = UserCtrl::me();

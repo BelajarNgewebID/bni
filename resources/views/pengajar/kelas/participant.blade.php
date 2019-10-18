@@ -3,11 +3,8 @@
 @section('title', 'Peserta '.$classData->title.' | Belajar Ngeweb ID')
 
 @section('content')
-<div class="lebar-100">
-    <h1 class="d-inline-block">{{ $classData->title }}</h1>
-</div>
 
-@include('layouts.menuKelas')
+@include('layouts.pengajar.headerKelas')
 
 <div class="row">
     <div class="content bg-putih rounded bayangan-5 p-1">
