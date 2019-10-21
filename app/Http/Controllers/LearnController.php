@@ -95,5 +95,8 @@ class LearnController extends Controller
         return response()->stream(function() use ($stream) {
             $stream->start();
         });
-	}
+    }
+    public static function update($learnId, $toUpdate) {
+        return Learn::find($learnId)->update($toUpdate);
+    }
 }

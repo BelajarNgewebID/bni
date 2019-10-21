@@ -24,6 +24,10 @@ class PayoutController extends Controller
             'status' => 0,
         ]);
 
+        foreach($availableToPayout as $item) {
+            $updateLearnStatus = LearnCtrl::update($item->id, ['is_payout' => 1]);
+        }
+
         return redirect()->route('pengajar.earning');
     }
 }

@@ -70,6 +70,9 @@ class ClassController extends Controller
 
         return redirect()->route('pengajar.kelas');
     }
+    public function edit($classId, $toEdit) {
+        return Kelas::find($classId)->update($toEdit);
+    }
     public function update($id, Request $req) {
         $validateData = $this->validate($req, [
             'cover' => 'image',
