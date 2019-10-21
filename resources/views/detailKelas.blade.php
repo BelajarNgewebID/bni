@@ -114,9 +114,11 @@
                     <input type="hidden" id="selectedMaterial" name="selectedMaterial">
                     <button type="button" id="btnBuy" class="lebar-100">Beli Materi</button>
                 </form>
-                <a href="{{ route('learn.start', [$classData->id, 1]) }}">
-                    <button class="lebar-100 mt-2 primer">Lihat materi yang kamu punya</button>
-                </a>
+                @if ($isJoined)
+                    <a href="{{ route('learn.start', [$classData->id, 1]) }}">
+                        <button class="lebar-100 mt-2 primer">Lihat materi yang kamu punya</button>
+                    </a>
+                @endif
             </div>
         </div>
     </div>
