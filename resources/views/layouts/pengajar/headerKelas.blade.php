@@ -14,8 +14,10 @@
 <div class="lebar-100">
     <h1 class="d-inline-block">{{ $classData->title }}</h1>
     <p class="teks-transparan">
-        {{ toIdr($availableToPayout->sum('to_pay')) }} tersedia untuk diambil. 
-        <a href="{{ route('payout.claim', $classData->id) }}">Tarik dana!</a>
+        @if($availableToPayout != 0)
+            {{ toIdr($availableToPayout->sum('to_pay')) }} tersedia untuk diambil. 
+            <a href="{{ route('payout.claim', $classData->id) }}">Tarik dana!</a>
+        @endif
     </p>
 </div>
 

@@ -94,10 +94,14 @@ class UserController extends Controller
     public function createClass() {
         return view('pengajar.kelas.createClass');
     }
+    public function getSaldo($classId) {
+        $materials = MaterialCtrl::getMaterialClass($classId);
+        return $materials->count() > 0 ? LearnCtrl::getAvailableToPayout($classId) : 0;
+    }
     public function manageMaterial($classId) {
         $materials = MaterialCtrl::getMaterialClass($classId);
         $classData = ClassCtrl::info($classId);
-        $availableToPayout = LearnCtrl::getAvailableToPayout($classId);
+        $availableToPayout = $materials->count() > 0 ? LearnCtrl::getAvailableToPayout($classId) : 0;
 
         return view('pengajar.kelas.material')->with([
             'materials' => $materials,
@@ -107,7 +111,7 @@ class UserController extends Controller
     }
     public function classSettings($classId) {
         $classData = ClassCtrl::info($classId);
-        $availableToPayout = LearnCtrl::getAvailableToPayout($classId);
+        $availableToPayout = $this->getSaldo($classId);
 
         return view('pengajar.kelas.settings')->with([
             'classData' => $classData,
@@ -121,7 +125,7 @@ class UserController extends Controller
     public function classParticipant($classId) {
         $classData = ClassCtrl::info($classId);
         $learnerData = LearnCtrl::getLearner($classId);
-        $availableToPayout = LearnCtrl::getAvailableToPayout($classId);
+        $availableToPayout = $this->getSaldo($classId);
 
         return view('pengajar.kelas.participant')->with([
             'classData' => $classData,
