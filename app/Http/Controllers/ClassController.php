@@ -57,7 +57,7 @@ class ClassController extends Controller
             'user_id' => $myData->id,
             'title' => $req->title,
             'description' => $req->description,
-            'cover' => $coverFileNamestatic ,
+            'cover' => $coverFileName,
             'tag' => ''
         ]);
 
