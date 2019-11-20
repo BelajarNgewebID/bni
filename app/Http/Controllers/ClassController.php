@@ -23,14 +23,16 @@ class ClassController extends Controller
 		}
 		return $res;
     }
-    // user
+    // for user
     public static function mine($myId) {
         return Learn::where([
             ['status', 1],
             ['user_id', $myId]
-        ])->with('kelas.users')->get();
+        ])
+        ->groupBy('class_id')
+        ->with('kelas.users')->get();
     }
-    // pengajar
+    // for pengajar
     public static function myClass($userId) {
         return Kelas::where('user_id', $userId)->get();
     }
@@ -100,7 +102,7 @@ class ClassController extends Controller
         $class = Kelas::find($id);
         $class->delete();
         
-        return "200";
+        return redirect()->route('pengajar.kelas');
     }
     public static function search($term) {
         $myData = UserCtrl::me();
@@ -127,6 +129,9 @@ class ClassController extends Controller
         $myClasses = explode(",", $myData->class_list);
 
         $kelas = Kelas::where('id', $id)->with('users')->first();
+        if($kelas == "") {
+            return redirect()->route('404');
+        }
         if(in_array($id, $myClasses)) {
             $materials = MateriCtrl::getAvailableToBuy($myData, $id);
         }else {

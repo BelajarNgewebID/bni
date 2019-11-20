@@ -16,10 +16,9 @@
             <div class="bg-putih rounded p-1">
                 <div class="wrap">
                     <span class="teks-transparan">Tagihan untuk :</span>
-                    {{ $invoice }}
-                    {{-- <h2>{{ $invoice->kelas->title }}</h2> --}}
-                    {{-- <span class="teks-transparan">{{ toIdr($invoice->to_pay) }}</span> --}}
-                    {{-- <form action="{{ route('invoice.bayar.action', $invoice->id) }}" method="POST" class="mt-3" enctype="multipart/form-data">
+                    <h2>{{ $invoice->kelas->title }}</h2>
+                    <span class="teks-transparan">{{ toIdr($invoice->to_pay) }}</span>
+                    <form action="{{ route('invoice.bayar.action', $invoice->id) }}" method="POST" class="mt-3" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <p>Upload bukti transfer kamu :</p>
                         <input type="file" class="box tinggi-40" name="evidence">
@@ -31,7 +30,7 @@
                             @endforeach
                         @endif
                         <button class="oren lebar-100 mt-2">Upload!</button>
-                    </form> --}}
+                    </form>
                 </div>
             </div>
         </div>

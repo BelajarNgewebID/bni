@@ -34,9 +34,15 @@
                     $totalToPay = $inv->sum('to_pay');
                 @endphp
                 <h3>Total : {{ toIdr($totalToPay) }}</h3>
-                <a href="{{ route('invoice.bayar', $item->id) }}">
+                <form action="{{ route('invoice.bayar') }}" method="POST" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <p>Sertakan bukti transfer untuk membayar tagihan</p>
+                    <input type="file" class="box" name="evidence">
+                    <div class="bg-merah p-2 mt-2 rounded">
+                        asidj
+                    </div>
                     <button class="oren mt-3">Bayar</button>
-                </a>
+                </form>
             @endif
         </div>
     </div>

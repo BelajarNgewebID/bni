@@ -34,7 +34,26 @@ class InvoiceController extends Controller
         $a = explode(".", $name);
         return $a[count($a) - 1];
     }
-    public function pay($learnId, Request $req) {
+    public function pay(Request $req) {
+        $validateData = $this->validate($req, [
+            'evidence' => 'required|image'
+        ]);
+        
+        $myData = UserCtrl::me();
+        $bayar = Learn::where([
+            ['user_id', $myData->id],
+            ['status', 0]
+        ])->update([
+            'status' => 1
+        ]);
+
+        $evidence = $req->file('evidence');
+        $fileName = $evidence->getClientOriginalName();
+        $evidence->storeAs('public/evidences/', $fileName);
+
+        return redirect()->route('invoice', 'sukses');
+    }
+    public function payBackup($learnId, Request $req) {
         $validateData = $this->validate($req, [
             'evidence' => 'required|image'
         ]);
@@ -50,7 +69,22 @@ class InvoiceController extends Controller
 
         return redirect()->route('invoice.done');
     }
-    public function payPage($id) {
+    public function payPage() {
+        $myData = UserCtrl::me();
+        $myId = $myData->id;
+
+        $data = Learn::where([
+            ['user_id', $myId],
+            ['status', 0],
+            ['to_pay', '>', 0]
+        ])->with('material')->get();
+
+        return view('user.pay')->with([
+            'myData' => $myData,
+            'invoice' => $data,
+        ]);
+    }
+    public function payPageBackup($id) {
         $myData = UserCtrl::me();
         $invoice = Learn::where('id', $id)->with('kelas')->first();
 

@@ -57,7 +57,9 @@ Route::group(['prefix' => 'payout'], function() {
 Route::group(['prefix' => 'invoice'], function() {
     Route::get('/', 'InvoiceController@mine')->name('invoice')->middleware('User');
     Route::get('/selesai-bayar', 'InvoiceController@done')->name('invoice.done')->middleware('User');
-    Route::get('/{id}/bayar', 'InvoiceController@payPage')->name('invoice.bayar')->middleware('User');
+    // Route::get('/{id}/bayar', 'InvoiceController@payPage')->name('invoice.bayar')->middleware('User');
+    // Route::get('bayar', 'InvoiceController@payPage')->name('invoice.bayar')->middleware('User');
+    Route::post('bayar', 'InvoiceController@pay')->name('invoice.bayar')->middleware('User');
     Route::post('/{id}/bayar', 'InvoiceController@pay')->name('invoice.bayar.action')->middleware('User');
 });
 

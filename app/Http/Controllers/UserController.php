@@ -96,12 +96,12 @@ class UserController extends Controller
     }
     public function getSaldo($classId) {
         $materials = MaterialCtrl::getMaterialClass($classId);
-        return $materials->count() > 0 ? LearnCtrl::getAvailableToPayout($classId) : 0;
+        return $materials->count() > 0 ? LearnCtrl::getAvailableToPayout($classId) : collect([['to_pay' => 0]]);
     }
     public function manageMaterial($classId) {
         $materials = MaterialCtrl::getMaterialClass($classId);
         $classData = ClassCtrl::info($classId);
-        $availableToPayout = $materials->count() > 0 ? LearnCtrl::getAvailableToPayout($classId) : 0;
+        $availableToPayout = $this->getSaldo($classId);
 
         return view('pengajar.kelas.material')->with([
             'materials' => $materials,

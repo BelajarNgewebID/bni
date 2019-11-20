@@ -55,12 +55,13 @@
             e.preventDefault()
             return false
         }
-    })
+    }
 
     function tryDelete(typed) {
         if(typed.toLowerCase() == namaKelas.toLowerCase()) {
             $("#btnDelete").atribut('type', 'submit')
             $("#btnDelete").atribut('class', 'tbl merah lebar-100')
+            allowToDelete = 1
         }else {
             $("#btnDelete").atribut('type', 'button')
             $("#btnDelete").atribut('class', 'tbl bg-merah-transparan lebar-100')

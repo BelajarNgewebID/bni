@@ -42,24 +42,30 @@
         <input type="text" class="box-2" value="{{ $term }}" placeholder="Cari tutorial..." name="term">
         <button class="ml-1 oren rounded-circle"><i class="fas fa-search"></i></button>
     </form>
-    @foreach ($datas as $item)
-    <div class="kelas bag lebar-25">
-        <div class="wrap">
-            <div class="bg-putih rounded pb-1">
-                <div class="header">
-                    <img src="{{ asset('storage/avatars/'. $item->users->photo) }}" class="authorsAvatar rounded-circle">
-                    {{ $item->users->name }}
-                </div>
-                <div class="cover" style="background: url('{{ asset('storage/kelas/'.$ClassCtrl::slug($item->title).'/'.$item->cover) }}')"></div>
-                <div class="wrap">
-                    <h4>{{ $item->title }}</h4>
-                    <a href="{{ route('kelas.detail', $item->id) }}">
-                        <button class="oren-alt lebar-100 tinggi-50 p-0">Detail Kelas</button>
-                    </a>
+    @if ($datas->count() == 0)
+        <div class="rata-tengah mt-5">
+            <h1>Hasil tidak ditemukan, coba cari yang lain</h1>
+        </div>
+    @else
+        @foreach ($datas as $item)
+        <div class="kelas bag lebar-25">
+            <div class="wrap">
+                <div class="bg-putih rounded pb-1">
+                    <div class="header">
+                        <img src="{{ asset('storage/avatars/'. $item->users->photo) }}" class="authorsAvatar rounded-circle">
+                        {{ $item->users->name }}
+                    </div>
+                    <div class="cover" style="background: url('{{ asset('storage/kelas/'.$ClassCtrl::slug($item->title).'/'.$item->cover) }}')"></div>
+                    <div class="wrap">
+                        <h4>{{ $item->title }}</h4>
+                        <a href="{{ route('kelas.detail', $item->id) }}">
+                            <button class="oren-alt lebar-100 tinggi-50 p-0">Detail Kelas</button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    @endforeach
+        @endforeach
+    @endif
 </div>
 @endsection

@@ -33,7 +33,9 @@ class LearnController extends Controller
         $data = Learn::where([
             ['class_id', $classId],
             ['status', 1]
-        ])->with('user')->get();
+        ])
+        ->groupBy('user_id')
+        ->with('user')->get();
         return $data;
     }
     public function redirectToFirstMaterial($classId, $firstMaterial) {
