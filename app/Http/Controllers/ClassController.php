@@ -36,6 +36,10 @@ class ClassController extends Controller
     public static function myClass($userId) {
         return Kelas::where('user_id', $userId)->get();
     }
+    public static function myPopularClass($userId) {
+        $data = Kelas::where('user_id', $userId)->orderBy('');
+        return $data;
+    }
     public static function info($classId, $relationship = NULL) {
         $query = Kelas::where('id', $classId);
         if($relationship != null) {
@@ -60,7 +64,8 @@ class ClassController extends Controller
             'title' => $req->title,
             'description' => $req->description,
             'cover' => $coverFileName,
-            'tag' => ''
+            'tag' => '',
+            'users_joined' => 0,
         ]);
 
         $titleSlug = $this->slug($req->title);

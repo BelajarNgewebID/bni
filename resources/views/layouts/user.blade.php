@@ -28,6 +28,7 @@
                         <a href="{{ route('pengajar.dashboard') }}"><li>Panel Pengajar</li></a>
                     @endif
                     <a href="{{ route('invoice') }}"><li>Invoice</li></a>
+                    <a href="{{ route('user.settings') }}"><li>Settings</li></a>
                     <a href="{{ route('user.logout') }}"><li>Logout</li></a>
                 </div>
             </div>

@@ -142,4 +142,8 @@ class UserController extends Controller
             'payouts' => $payouts,
         ]);
     }
+
+    public function settingsPage() {
+        $myData = $this->me();
+    }
 }

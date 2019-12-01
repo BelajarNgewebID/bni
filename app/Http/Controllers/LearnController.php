@@ -47,7 +47,8 @@ class LearnController extends Controller
         $classData = ClassCtrl::info($classId);
         $getMaterials = MaterialCtrl::mine($myData, [
             'status' => 1,
-        ]);
+        ], $classId);
+
         $currentMaterial = MaterialCtrl::get($materialId);
         $firstMaterial = $getMaterials[0]->material->id;
 

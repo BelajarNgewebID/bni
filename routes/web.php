@@ -1,19 +1,6 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', 'UserController@indexPage')->name('user.index');
-
-// Auth::routes();
 
 Route::get('/login', 'UserController@loginPage')->name('user.loginPage');
 Route::get('/logout', 'UserController@logout')->name('user.logout');
@@ -23,8 +10,9 @@ Route::post('/register', 'UserController@register')->name('user.register');
 Route::get('/sukses-register', 'UserController@registerSuccess')->name('user.registerSuccess');
 
 Route::get('/dashboard', 'UserController@dashboardPage')->name('user.dashboard')->middleware('User');
-Route::get('/kelas-saya', 'UserController@listKelas')->name('user.listKelas');
-Route::get('/cari', 'UserController@cariKelas')->name('user.cariKelas');
+Route::get('/kelas-saya', 'UserController@listKelas')->name('user.listKelas')->middleware('User');
+Route::get('/cari', 'UserController@cariKelas')->name('user.cariKelas')->middleware('User');
+Route::get('/settings', 'UserController@settingsPage')->name('user.settings')->middleware('User');
 
 Route::group(['prefix' => 'pengajar'], function() {
     Route::get('/dasbor', 'UserController@dashboard')->name('pengajar.dashboard')->middleware('User');
@@ -78,3 +66,15 @@ Route::group(['prefix' => 'admin'], function() {
 });
 
 Route::get('/stream/{classId}/{videoPath}', 'LearnController@stream')->name('stream.video');
+
+Route::get('/test', function() {
+    $myArr = [1,2,2,5,6,6];
+    dd(array_count_values($myArr));
+    // $i = 0;
+    // foreach($myArr as $key => $value) {
+    //     if($myArr[$key] == $myArr[$key + 1]) {
+    //         echo $value;
+    //     }
+    //     $i = $i + 1;
+    // }
+});

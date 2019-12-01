@@ -38,9 +38,13 @@
                     {{ csrf_field() }}
                     <p>Sertakan bukti transfer untuk membayar tagihan</p>
                     <input type="file" class="box" name="evidence">
-                    <div class="bg-merah p-2 mt-2 rounded">
-                        asidj
-                    </div>
+                    @if ($errors->count() > 0)
+                        @foreach ($errors->all() as $error)
+                            <div class="bg-merah p-2 mt-2 rounded">
+                                {{ $error }}
+                            </div>
+                        @endforeach
+                    @endif
                     <button class="oren mt-3">Bayar</button>
                 </form>
             @endif

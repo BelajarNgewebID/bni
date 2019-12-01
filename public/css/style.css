@@ -84,6 +84,12 @@ select.box:focus {
 .bag-9 { width: 90%; }
 .bag-10 { width: 100%; }
 
+.bagi { display: inline-block;margin: -2px;vertical-align: top !important; }
+.bagi-2 { width: 50%; }
+.bagi-3 { width: 33.3%; }
+.bagi-4 { width: 25%; }
+.bagi-5 { width: 20%; }
+
 .bg-putih { background-color: #fff;color: #444; }
 .bg-merah { background-color: #e74c3c;color: #fff; }
 .bg-merah-transparan { background-color: #e74c3c30;color: #c0392b; }

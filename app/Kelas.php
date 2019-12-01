@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kelas extends Model
 {
     protected $table = 'class';
-    protected $fillable = ['user_id','title','description','cover','tag'];
+    protected $fillable = ['user_id','title','description','cover','tag','user_joined'];
 
     public function users() {
         return $this->belongsTo('App\User', 'user_id');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Learn;
+use App\Kelas;
 use Illuminate\Http\Request;
 use \App\Http\Controllers\UserController as UserCtrl;
 
@@ -40,16 +41,19 @@ class InvoiceController extends Controller
         ]);
         
         $myData = UserCtrl::me();
-        $bayar = Learn::where([
+        $data = Learn::where([
             ['user_id', $myData->id],
             ['status', 0]
-        ])->update([
-            'status' => 1
         ]);
 
         $evidence = $req->file('evidence');
         $fileName = $evidence->getClientOriginalName();
         $evidence->storeAs('public/evidences/', $fileName);
+
+        $bayar = $data->update([
+            'status' => 2,
+            'evidence' => $fileName,
+        ]);
 
         return redirect()->route('invoice', 'sukses');
     }
@@ -98,7 +102,13 @@ class InvoiceController extends Controller
         return view('user.donePay')->with(['myData' => $myData]);
     }
     public function accept($id) {
-        $inv = Learn::find($id)->update([['status', 1]]);
+        $inv = Learn::where('id', $id);
+        $classId = $inv->first()->class_id;
+        
+        $increaseUsersJoined = Kelas::find($classId)->increment('users_joined');
+
+        $accept = $inv->update(['status' => 1]);
+
         return redirect()->route('admin.invoice');
     }
     public function decline($id) {

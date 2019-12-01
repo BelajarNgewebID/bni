@@ -19,11 +19,12 @@ class MaterialController extends Controller
     public static function getMaterialClass($classId) {
         return Material::where('class_id', $classId)->orderBy('updated_at')->get();
     }
-    public static function mine($user, $opt = NULL) {
+    public static function mine($user, $opt = NULL, $classId = NULL) {
         $statusFilter = array_key_exists('status', $opt) ? ['status', $opt['status']] : ['to_pay', '!=', 'not this title'];
         $userMaterial = Learn::where([
             ['user_id', $user->id],
             $statusFilter,
+            ['class_id', $classId],
         ])->with('material');
 
         if(array_key_exists('column', $opt)) {

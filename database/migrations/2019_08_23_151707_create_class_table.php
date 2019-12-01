@@ -21,6 +21,7 @@ class CreateClassTable extends Migration
             $table->text('description');
             $table->string('cover');
             $table->string('tag');
+            $table->integer('users_joined');
             $table->timestamps();
         });
     }
