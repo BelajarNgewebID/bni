@@ -60,6 +60,11 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('login', 'AdminController@login')->name('admin.login');
     Route::get('dashboard', 'AdminController@dashboard')->name('admin.dashboard')->middleware('Admin');
     Route::get('invoice', 'AdminController@invoice')->name('admin.invoice')->middleware('Admin');
+    Route::get('kelas', 'AdminController@kelas')->name('admin.kelas')->middleware('Admin');
+
+    Route::get('mentor', 'AdminController@mentor')->name('admin.mentor')->middleware('Admin');
+    Route::post('mentor/add', 'UserController@addAsMentor')->name('admin.mentorAdd')->middleware('Admin');
+    Route::get('mentor/{id}/remove', 'UserController@removeMentor')->name('admin.removeMentor')->middleware('Admin');
 
     Route::get('invoice/{id}/accept', 'InvoiceController@accept')->name('admin.invoice.accept')->middleware('Admin');
     Route::get('invoice/{id}/decline', 'InvoiceController@decline')->name('admin.invoice.decline')->middleware('Admin');

@@ -27,6 +27,18 @@
             <span>Invoice</span>
         </li>
     </a>
+    <a href="{{ route('admin.kelas') }}">
+        <li class="{{ (Route::currentRouteName() == 'admin.kelas') ? 'active' : 'none' }}">
+            <div class="icon"><i class="fas fa-book"></i></div>
+            <span>Kelas</span>
+        </li>
+    </a>
+    <a href="{{ route('admin.mentor') }}">
+        <li class="{{ (Route::currentRouteName() == 'admin.mentor') ? 'active' : 'none' }}">
+            <div class="icon"><i class="fas fa-user"></i></div>
+            <span>Mentor</span>
+        </li>
+    </a>
 </nav>
 
 <div class="container">

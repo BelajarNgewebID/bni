@@ -19,6 +19,19 @@ class UserController extends Controller
     public static function me() {
         return Auth::guard('user')->user();
     }
+    public static function getMentor() {
+        return User::where([
+            ['is_mentor', 1]
+        ])->get();
+    }
+    public function searchUserNonMentor(Request $req) {
+        $q = $req->q;
+        $user = User::where([
+            ['name', 'LIKE', '%'.$q.'%'],
+            ['is_mentor', 0]
+        ])->get();
+        return response()->json($user);
+    }
     public static function update($id, $column, $value) {
         return User::find($id)->update([$column => $value]);
     }
@@ -145,5 +158,16 @@ class UserController extends Controller
 
     public function settingsPage() {
         $myData = $this->me();
+    }
+    public function addAsMentor(Request $req) {
+        $mentors = json_decode($req->mentors);
+        foreach($mentors as $mentor) {
+            $beingMentor = $this->update($mentor->id, 'is_mentor', 1);
+        }
+        return redirect()->route('admin.mentor');
+    }
+    public function removeMentor($id) {
+        $removeMentorStatus = $this->update($id, 'is_mentor', 0);
+        return redirect()->route('admin.mentor');
     }
 }

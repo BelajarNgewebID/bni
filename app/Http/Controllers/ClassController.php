@@ -23,6 +23,9 @@ class ClassController extends Controller
 		}
 		return $res;
     }
+    public static function allClass() {
+        return Kelas::all();
+    }
     // for user
     public static function mine($myId) {
         return Learn::where([

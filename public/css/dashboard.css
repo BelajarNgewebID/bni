@@ -21,7 +21,7 @@
 }
 .menu li .icon {
     display: inline-block;
-    margin-right: 10px;
+    width: 35px;
 }
 
 .container {

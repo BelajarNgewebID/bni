@@ -299,3 +299,26 @@ function getExt(val) {
 	let ext = re.exec(val)[1]
 	return ext
 }
+
+function createElement(props) {
+	let el = document.createElement(props.el)
+	if(props.attribute !== undefined) {
+		props.attribute.forEach(res => {
+			el.setAttribute(res[0], res[1])
+		})
+	}
+	
+	if(props.html !== undefined) {
+		// let val = document.createElement('span')
+		// val.innerHTML = props.html
+
+		// el.appendChild(val)
+		el.innerHTML = props.html
+	}
+	
+	document.querySelector(props.createTo).appendChild(el)  
+}
+const removeArray = (arr, toRemove) => {
+	let index = arr.indexOf(toRemove)
+	arr.splice(index, 1)
+}
