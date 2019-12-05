@@ -82,7 +82,11 @@ class UserController extends Controller
     }
     public function indexPage() {
         $myData = $this->me();
-        return view('index')->with(['myData' => $myData]);
+        $featuredClass = ClassCtrl::allFeatured();
+        return view('index')->with([
+            'myData' => $myData,
+            'featuredClass' => $featuredClass,
+        ]);
     }
     public function listKelas() {
         $myData = $this->me();
@@ -97,7 +101,21 @@ class UserController extends Controller
 
     // pengajar
     public function dashboard() {
-        return view('pengajar.dashboard');
+        $myId = $this->me()->id;
+        $classTotal = ClassCtrl::allClass(['id','users_joined']);
+        $myPopularClass = ClassCtrl::myPopularClass($myId)->limit(5)->get();
+        $totalParticipant = $classTotal->sum('users_joined');
+        $revenue = LearnCtrl::get([
+            ['is_payout', 0],
+            ['status', 1]
+        ])->get('to_pay')->sum('to_pay');
+        
+        return view('pengajar.dashboard')->with([
+            'classTotal' => $classTotal,
+            'myPopularClass' => $myPopularClass,
+            'totalParticipant' => $totalParticipant,
+            'revenue' => $revenue,
+        ]);
     }
     public function kelas() {
         $myId = $this->me()->id;

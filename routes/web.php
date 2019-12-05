@@ -36,6 +36,9 @@ Route::group(['prefix' => 'kelas'], function() {
     Route::get('{id}', 'ClassController@detail')->name('kelas.detail');
     Route::post('{id}/join', 'ClassController@join')->name('kelas.join');
     Route::delete('{id}/delete', 'ClassController@delete')->name('kelas.delete');
+
+    Route::post('featuring', 'ClassController@featuring')->name('kelas.featuring');
+    Route::get('{id}/remove-featuring', 'ClassController@removeFeaturing')->name('kelas.removeFeaturing');
 });
 
 Route::group(['prefix' => 'payout'], function() {
@@ -61,6 +64,7 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('dashboard', 'AdminController@dashboard')->name('admin.dashboard')->middleware('Admin');
     Route::get('invoice', 'AdminController@invoice')->name('admin.invoice')->middleware('Admin');
     Route::get('kelas', 'AdminController@kelas')->name('admin.kelas')->middleware('Admin');
+    Route::get('featured-kelas', 'AdminController@featuredKelas')->name('admin.featuredKelas')->middleware('Admin');
 
     Route::get('mentor', 'AdminController@mentor')->name('admin.mentor')->middleware('Admin');
     Route::post('mentor/add', 'UserController@addAsMentor')->name('admin.mentorAdd')->middleware('Admin');

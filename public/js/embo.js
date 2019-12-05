@@ -322,3 +322,6 @@ const removeArray = (arr, toRemove) => {
 	let index = arr.indexOf(toRemove)
 	arr.splice(index, 1)
 }
+const request = (url, attr) => {
+	return fetch(url, attr).then(res => res.json())
+}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Storage;
 use App\User;
 use App\Kelas;
 use App\Material;
@@ -66,6 +67,15 @@ class AdminController extends Controller
         return view('admin.kelas')->with([
             'classes' => $classes,
             'q' => $q
+        ]);
+    }
+    public function featuredKelas() {
+        $classes = ClassCtrl::allFeatured();
+
+        // bind and slug title
+
+        return view('admin.featuredKelas')->with([
+            'classes' => $classes
         ]);
     }
 }

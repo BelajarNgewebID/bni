@@ -6,6 +6,7 @@ use Storage;
 use App\Kelas;
 use App\Learn;
 use App\Material;
+use App\FeaturedKelas;
 use Illuminate\Http\Request;
 use \App\Http\Controllers\UserController as UserCtrl;
 use \App\Http\Controllers\InvoiceController as InvCtrl;
@@ -23,8 +24,22 @@ class ClassController extends Controller
 		}
 		return $res;
     }
-    public static function allClass() {
-        return Kelas::all();
+    public static function allClass($get = NULL) {
+        return $get == NULL ? Kelas::all() : Kelas::get($get);
+    }
+    public static function allFeatured() {
+        $dateNow = date('Y-m-d');
+        $data = FeaturedKelas::where([
+            ['valid_until', '>=', $dateNow]
+        ])->with('kelas.users')->get();
+
+        foreach($data as $class) {
+            $sluggedTitle = self::slug($class->kelas->title);
+            $class['kelas']['slugged_title'] = $sluggedTitle;
+            $class['kelas']['cover_url'] = Storage::disk('kelas')->url($sluggedTitle."/".$class->kelas->cover);
+        }
+
+        return $data;
     }
     // for user
     public static function mine($myId) {
@@ -40,8 +55,7 @@ class ClassController extends Controller
         return Kelas::where('user_id', $userId)->get();
     }
     public static function myPopularClass($userId) {
-        $data = Kelas::where('user_id', $userId)->orderBy('');
-        return $data;
+        return Kelas::where('user_id', $userId)->orderBy('users_joined', 'DESC');
     }
     public static function info($classId, $relationship = NULL) {
         $query = Kelas::where('id', $classId);
@@ -54,28 +68,28 @@ class ClassController extends Controller
         $myData = UserCtrl::me();
 
         $validateData = $this->validate($req, [
-            'cover' => 'image|required',
-            'title' => 'required',
-            'description' => 'required',
+            'cover'         => 'image|required',
+            'title'         => 'required',
+            'description'   => 'required',
         ]);
 
         $cover = $req->file('cover');
         $coverFileName = $cover->getClientOriginalName();
 
         $create = Kelas::create([
-            'user_id' => $myData->id,
-            'title' => $req->title,
-            'description' => $req->description,
-            'cover' => $coverFileName,
-            'tag' => '',
-            'users_joined' => 0,
+            'user_id'       => $myData->id,
+            'title'         => $req->title,
+            'description'   => $req->description,
+            'cover'         => $coverFileName,
+            'tag'           => '',
+            'users_joined'  => 0,
         ]);
 
         $titleSlug = $this->slug($req->title);
 
         // create directory for storing material
         $createDir = Storage::disk('kelas')->makeDirectory($titleSlug);
-
+        // store material
         $cover->storeAs('public/kelas/'.$titleSlug.'/', $coverFileName);
 
         return redirect()->route('pengajar.kelas');
@@ -85,21 +99,21 @@ class ClassController extends Controller
     }
     public function update($id, Request $req) {
         $validateData = $this->validate($req, [
-            'cover' => 'image',
-            'title' => 'required',
-            'description' => 'required',
+            'cover'         => 'image',
+            'title'         => 'required',
+            'description'   => 'required',
         ]);
 
         $cover = $req->file('cover');
 
-        $kelas = Kelas::find($id);
-        $kelas->title = $req->title;
-        $kelas->description = $req->description;
+        $kelas                 = Kelas::find($id);
+        $kelas->title           = $req->title;
+        $kelas->description     = $req->description;
         if($cover != "") {
             $coverFileName = $cover->getClientOriginalName();
-            $kelas->cover = $coverFileName;
+            $kelas->cover   = $coverFileName;
 
-            $titleSlug = $this->slug($req->title);
+            $titleSlug     = $this->slug($req->title);
             $cover->storeAs('public/kelas/'.$titleSlug.'/', $coverFileName);
         }
         $kelas->save();
@@ -107,17 +121,15 @@ class ClassController extends Controller
         return redirect()->route('kelas.settings', $id);
     }
     public function delete($id) {
-        $class = Kelas::find($id);
-        $class->delete();
-        
+        $class = Kelas::find($id)->delete();
         return redirect()->route('pengajar.kelas');
     }
     public static function search($term) {
-        $myData = UserCtrl::me();
-        $notMine = ['user_id', 'LIKE', '%%'];
+        $myData     = UserCtrl::me();
+        $notMine    = ['user_id', 'LIKE', '%%'];
         if($myData != "") {
-            $myId = $myData;
-            $notMine = ['user_id', '!=', $myId];
+            $myId       = $myData;
+            $notMine    = ['user_id', '!=', $myId];
         }
         return Kelas::where([
             ['title', 'LIKE', '%'.$term.'%'],
@@ -133,8 +145,8 @@ class ClassController extends Controller
         return $get == 0 ? 0 : 1;
     }
     public function detail($id) {
-        $myData = UserCtrl::me();
-        $myClasses = explode(",", $myData->class_list);
+        $myData     = UserCtrl::me();
+        $myClasses  = explode(",", $myData->class_list);
 
         $kelas = Kelas::where('id', $id)->with('users')->first();
         if($kelas == "") {
@@ -159,10 +171,10 @@ class ClassController extends Controller
 
         return view('detailKelas')->with([
             'classData' => $kelas,
-            'myData' => $myData,
+            'myData'    => $myData,
             'materials' => $materials,
-            'isJoined' => $isJoined,
-            'isPaid' => $isPaid,
+            'isJoined'  => $isJoined,
+            'isPaid'    => $isPaid,
         ]);
     }
     public function isHaveClass($myClass, $classId) {
@@ -171,7 +183,7 @@ class ClassController extends Controller
         return (in_array($classId, $myClass)) ? true : false;
     }
     public function updateMyClass($params) {
-        $myData = $params['userData'];
+        $myData  = $params['userData'];
         $classId = $params['classId'];
 
         $userClasses = $myData->class_list;
@@ -185,43 +197,65 @@ class ClassController extends Controller
         }
     }
     public function join($id, Request $req) {
-        $classId = $id;
-        $myData = UserCtrl::me();
-        $selectedMaterial = explode(",", $req->selectedMaterial);
+        $classId            = $id;
+        $myData             = UserCtrl::me();
+        $selectedMaterial   = explode(",", $req->selectedMaterial);
 
         $this->updateMyClass([
-            'userData' => $myData,
-            'classId' => $classId,
+            'userData'  => $myData,
+            'classId'   => $classId,
         ]);
 
         foreach($selectedMaterial as $key => $value) {
-            $material = Material::find($value);
-            $status = $material->price > 0 ? 0 : 1;
+            $material   = Material::find($value);
+            $status     = $material->price > 0 ? 0 : 1;
 
             $join = Learn::create([
-                'user_id' => $myData->id,
-                'material_id' => $value,
-                'class_id' => $classId,
-                'to_pay' => $material->price,
-                'status' => $status,
+                'user_id'       => $myData->id,
+                'material_id'   => $value,
+                'class_id'      => $classId,
+                'to_pay'        => $material->price,
+                'status'        => $status,
             ]);
         }
 
         return redirect()->route('invoice');
     }
     public function joinLama($id, Request $req) {
-        $classId = $id;
-        $myData = UserCtrl::me();
-        $myId = $myData->id;
-        $classData = $this->info($classId);
-        $status = $classData->price > 0 ? 0 : 1;
+        $classId    = $id;
+        $myData     = UserCtrl::me();
+        $myId       = $myData->id;
+        $classData  = $this->info($classId);
+        $status     = $classData->price > 0 ? 0 : 1;
 
         $joining = Learn::create([
-            'user_id' => $myId,
-            'class_id' => $classId,
-            'status' => $status,
+            'user_id'   => $myId,
+            'class_id'  => $classId,
+            'status'    => $status,
         ]);
         
         return redirect()->route('invoice');
+    }
+    public function searchClassForFeatured(Request $req) {
+        $q = $req->q;
+
+        $data = Kelas::where([
+            ['title', 'LIKE', '%'.$q.'%']
+        ])->orWhere([
+            ['id', 'LIKE', '%'.$q.'%']
+        ])->with('users')->get();
+        return response()->json($data);
+    }
+    public function featuring(Request $req) {
+        $addToFeaturedClass = FeaturedKelas::create([
+            'class_id'  => $req->class_id,
+            'valid_until'  => $req->until,
+        ]);
+
+        return redirect()->route('admin.featuredKelas');
+    }
+    public function removeFeaturing($id) {
+        $removeClass = FeaturedKelas::find($id)->delete();
+        return redirect()->route('admin.featuredKelas');
     }
 }

@@ -2,6 +2,12 @@
 
 @section('title', 'Dasbor')
 
+@php
+    function toIdr($angka) {
+        return 'Rp. '.strrev(implode('.',str_split(strrev(strval($angka)),3)));
+    }
+@endphp
+
 @section('head.dependencies')
 <style>
     #popularClass {
@@ -25,7 +31,7 @@
         <div class="wrap">
             <div class="bg-putih rounded bayangan-5 p-1 ">
                 <div class="wrap">
-                    <h2>10</h2>
+                    <h2>{{ $classTotal->count() }}</h2>
                     kelas
                 </div>
             </div>
@@ -35,7 +41,7 @@
         <div class="wrap">
             <div class="bg-putih rounded bayangan-5 p-1 ">
                 <div class="wrap">
-                    <h2>2384</h2>
+                    <h2>{{ $totalParticipant }}</h2>
                     peserta
                 </div>
             </div>
@@ -45,8 +51,8 @@
         <div class="wrap">
             <div class="bg-putih rounded bayangan-5 p-1 ">
                 <div class="wrap">
-                    <h2>Rp 500.000</h2>
-                    penghasilan
+                    <h2>{{ toIdr($revenue) }}</h2>
+                    penghasilan belum diambil
                 </div>
             </div>
         </div>
@@ -72,18 +78,12 @@
                     <h3>Kelas paling populer</h3>
                     <table>
                         <tbody>
-                            <tr>
-                                <td>Menjadi Android Developer Expert</td>
-                                <td style="width: 25%">520 peserta</td>
-                            </tr>
-                            <tr>
-                                <td>Menjadi Android Developer Expert yang Berguna bagi nusa dan bangsa</td>
-                                <td>50 peserta</td>
-                            </tr>
-                            <tr>
-                                <td>Menjadi Android Developer Expert</td>
-                                <td>50 peserta</td>
-                            </tr>
+                            @foreach ($myPopularClass as $class)
+                                <tr>
+                                    <td>{{ $class->title }}</td>
+                                    <td style="width: 25%">{{ $class->users_joined }} peserta</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     <a href="{{ route('pengajar.createClass') }}">

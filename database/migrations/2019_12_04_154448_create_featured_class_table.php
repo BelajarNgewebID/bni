@@ -16,7 +16,7 @@ class CreateFeaturedClassTable extends Migration
         Schema::create('featured_class', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('class_id')->unsigned()->index();
-            $table->foreign('class_id')->references('id')->on('users');
+            $table->foreign('class_id')->references('id')->on('class');
             $table->date('valid_until');
             $table->timestamps();
         });

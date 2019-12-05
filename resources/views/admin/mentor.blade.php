@@ -97,9 +97,6 @@
     const newMentor = () => {
         munculPopup("#newMentor")
     }
-    const request = (url, attr) => {
-        return fetch(url, attr).then(res => res.json())
-    }
     const searchUser = (q) => {
         if(q.split('').length < 3) {
             return false

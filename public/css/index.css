@@ -73,8 +73,19 @@
     top: 145px;left: 5%;right: 5%;
 }
 .container .title.index { font-size: 50px;line-height: 70px; }
-.container .thumbnail img {
+.container .featured {
+    background: #fff;
+    color: #444;
+    border-radius: 7px;
+}
+.container .featured a { color: #444; }
+.container .thumbnail {
     width: 100%;
+    height: 300px;
+    background-size: cover !important;
+    background-position: center center !important;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 .container .featured h3 {
     font-size: 23px;
@@ -83,10 +94,11 @@
 }
 .container .featured .author {
     line-height: 40px;
-    margin-top: 15px;
+    margin-top: 10px;
+    font-size: 15px;
 }
 .container .featured .author img {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 90px;
 }

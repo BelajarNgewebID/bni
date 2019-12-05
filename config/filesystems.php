@@ -58,7 +58,7 @@ return [
         'kelas' => [
             'driver' => 'local',
             'root' => storage_path('app/public/kelas'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL').'/storage/kelas',
             'visibility' => 'public',
         ],
 

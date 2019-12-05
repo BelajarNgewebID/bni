@@ -23,6 +23,10 @@ class LearnController extends Controller
         ])->get($toGet);
         return $learn;
     }
+    public static function get($filter = NULL) {
+        $data = $filter == NULL ? Learn::all() : Learn::where($filter);
+        return $data;
+    }
     public static function getUnconfirm() {
         $data = Learn::where([
             ['status', 2]

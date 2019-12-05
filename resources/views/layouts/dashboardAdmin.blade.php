@@ -33,6 +33,12 @@
             <span>Kelas</span>
         </li>
     </a>
+    <a href="{{ route('admin.featuredKelas') }}">
+        <li class="{{ (Route::currentRouteName() == 'admin.featuredKelas') ? 'active' : 'none' }}">
+            <div class="icon"><i class="fas fa-star"></i></div>
+            <span>Featured Kelas</span>
+        </li>
+    </a>
     <a href="{{ route('admin.mentor') }}">
         <li class="{{ (Route::currentRouteName() == 'admin.mentor') ? 'active' : 'none' }}">
             <div class="icon"><i class="fas fa-user"></i></div>

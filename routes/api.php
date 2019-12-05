@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/user/search', 'UserController@searchUserNonMentor')->name('api.searchUserNonMentor');
+Route::post('/class/search', 'ClassController@searchClassForFeatured')->name('api.searchClassForFeatured');

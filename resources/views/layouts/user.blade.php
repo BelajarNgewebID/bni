@@ -42,6 +42,7 @@
 
 @yield('content')
 
+<script src="{{ asset('js/embo.js') }}"></script>
 @yield('javascript')
 
 </body>
