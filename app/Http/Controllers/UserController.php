@@ -16,6 +16,9 @@ class UserController extends Controller
 {
     use AuthenticatesUsers;
 
+    public static function isLoggedIn() {
+        return Auth::guard('user')->check();
+    }
     public static function me() {
         return Auth::guard('user')->user();
     }
@@ -176,6 +179,9 @@ class UserController extends Controller
 
     public function settingsPage() {
         $myData = $this->me();
+        return view('user.settings')->with([
+            'myData' => $myData
+        ]);
     }
     public function addAsMentor(Request $req) {
         $mentors = json_decode($req->mentors);
@@ -187,5 +193,35 @@ class UserController extends Controller
     public function removeMentor($id) {
         $removeMentorStatus = $this->update($id, 'is_mentor', 0);
         return redirect()->route('admin.mentor');
+    }
+    public function getExtension($fileName) {
+        $p = explode(".", $fileName);
+        return $p[count($p) - 1];
+    }
+    public function settingsPersonal(Request $req) {
+        $myData = $this->me();
+        $myId = $myData->id;
+
+        $getUserData = User::find($myId);
+        $updateData = $getUserData->update([
+            'name' => $req->name,
+            'email' => $req->email,
+        ]);
+
+        // handling profile picture
+        $photo = $req->file('photo');
+        if($photo != "") {
+            $fileName = $photo->getClientOriginalName();
+            $extension = $this->getExtension($fileName);
+            $timeNow = time();
+            $newFileName = $myData->id."-".$timeNow.".".$extension;
+
+            $upload = $photo->storeAs('public/avatars/', $newFileName);
+            $updateProfilePict = $getUserData->update([
+                'photo' => $newFileName
+            ]);
+        }
+
+        return redirect()->route('user.settings');
     }
 }

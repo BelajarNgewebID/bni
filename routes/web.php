@@ -11,8 +11,13 @@ Route::get('/sukses-register', 'UserController@registerSuccess')->name('user.reg
 
 Route::get('/dashboard', 'UserController@dashboardPage')->name('user.dashboard')->middleware('User');
 Route::get('/kelas-saya', 'UserController@listKelas')->name('user.listKelas')->middleware('User');
-Route::get('/cari', 'UserController@cariKelas')->name('user.cariKelas')->middleware('User');
+Route::get('/cari', 'UserController@cariKelas')->name('user.cariKelas');
 Route::get('/settings', 'UserController@settingsPage')->name('user.settings')->middleware('User');
+
+Route::group(['prefix' => 'settings'], function() {
+    Route::post('personal', 'UserController@settingsPersonal')->name('user.settings.personal');
+    Route::post('security', 'UserController@settingsSecurity')->name('user.settings.security');
+});
 
 Route::group(['prefix' => 'pengajar'], function() {
     Route::get('/dasbor', 'UserController@dashboard')->name('pengajar.dashboard')->middleware('User');

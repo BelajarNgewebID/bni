@@ -124,6 +124,7 @@ button {
     transition: 0.4s;
     font-family: ProBold;
 }
+button.disabled { cursor: not-allowed; }
 button.biru {
     background-color: #2196f3;
     color: #fff;

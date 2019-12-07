@@ -68,27 +68,9 @@
         <div class="bag bag-2">
             <img src="{{ asset('storage/avatars/'.$classData->users->photo) }}" class="foto rounded-circle">
         </div>
-        <div class="bag bag-6">
+        <div class="bag bag-8">
             <h2 class="mt-1">{{ $classData->title }}</h2>
             <p class="teks-transparan mb-0">{{ $classData->users->name }}</p>
-        </div>
-        <div class="bag bag-2 rata-kanan">
-            @if (Auth::guard('user')->check())
-                @php
-                    $actionRoute = $isJoined == 1 ? "learn.start" : "kelas.join";
-                    $actionMethod = $isJoined == 1 ? "GET" : "POST";
-                    $csrfField = $isJoined == 1 ? "" : csrf_field();
-                    $textButton = $isJoined == 1 ? "Mulai Belajar" : "Gabung Kelas";
-                @endphp
-                {{-- <form action="{{ route($actionRoute, $classData->id) }}" method="{{ $actionMethod }}">
-                    {{ $csrfField }}
-                    <button class="mt-2 oren lebar-100">{{ $textButton }}</button>
-                </form> --}}
-            @else
-                <div class="rata-tengah">
-                    <p>Login dulu untuk mulai belajar</p>
-                </div>
-            @endif
         </div>
     </div>
 

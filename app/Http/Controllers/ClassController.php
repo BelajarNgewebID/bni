@@ -145,18 +145,32 @@ class ClassController extends Controller
         return $get == 0 ? 0 : 1;
     }
     public function detail($id) {
+        $dataToPass = [];
+        // $dataToPass = [
+        //     'classData' => $kelas,
+        //     'myData'    => $myData,
+        //     'materials' => $materials,
+        //     'isJoined'  => $isJoined,
+        //     'isPaid'    => $isPaid,
+        // ];
+
         $myData     = UserCtrl::me();
-        $myClasses  = explode(",", $myData->class_list);
+        if(UserCtrl::isLoggedIn()) {
+            $myClasses  = explode(",", $myData->class_list);
+
+            if(in_array($id, $myClasses)) {
+                $materials = MateriCtrl::getAvailableToBuy($myData, $id);
+            }
+        }else {
+            $materials = MateriCtrl::getMaterialClass($id);
+        }
+        $dataToPass['materials'] = $materials;
 
         $kelas = Kelas::where('id', $id)->with('users')->first();
         if($kelas == "") {
             return redirect()->route('404');
         }
-        if(in_array($id, $myClasses)) {
-            $materials = MateriCtrl::getAvailableToBuy($myData, $id);
-        }else {
-            $materials = MateriCtrl::getMaterialClass($id);
-        }
+        $dataToPass['classData'] = $kelas;
 
         if($myData == "") {
             // belum login
@@ -164,18 +178,15 @@ class ClassController extends Controller
         }else {
             $isJoined = $this->isJoined($myData->id, $kelas->id);
         }
+        $dataToPass['isJoined'] = $isJoined;
+        
         $isPaid = "";
         if($isJoined != 0) {
             $isPaid = InvCtrl::isPaid($myData->id, $kelas->id);
         }
+        $dataToPass['isPaid'] = $isPaid;
 
-        return view('detailKelas')->with([
-            'classData' => $kelas,
-            'myData'    => $myData,
-            'materials' => $materials,
-            'isJoined'  => $isJoined,
-            'isPaid'    => $isPaid,
-        ]);
+        return view('detailKelas')->with($dataToPass);
     }
     public function isHaveClass($myClass, $classId) {
         $myClass = explode(",", $myClass);
