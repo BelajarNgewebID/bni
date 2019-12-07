@@ -8,6 +8,7 @@ Route::get('/register', 'UserController@registerPage')->name('user.registerPage'
 Route::post('/login', 'UserController@login')->name('user.login');
 Route::post('/register', 'UserController@register')->name('user.register');
 Route::get('/sukses-register', 'UserController@registerSuccess')->name('user.registerSuccess');
+Route::get('/activate/{email}', 'UserController@activate')->name('user.activate');
 
 Route::get('/dashboard', 'UserController@dashboardPage')->name('user.dashboard')->middleware('User');
 Route::get('/kelas-saya', 'UserController@listKelas')->name('user.listKelas')->middleware('User');
@@ -77,6 +78,10 @@ Route::group(['prefix' => 'admin'], function() {
 
     Route::get('invoice/{id}/accept', 'InvoiceController@accept')->name('admin.invoice.accept')->middleware('Admin');
     Route::get('invoice/{id}/decline', 'InvoiceController@decline')->name('admin.invoice.decline')->middleware('Admin');
+});
+
+Route::group(['prefix' => 'mailing'], function() {
+    Route::get('complete-registration', 'EmailController@completeRegistration')->name('email.completeRegistration');
 });
 
 Route::get('/stream/{classId}/{videoPath}', 'LearnController@stream')->name('stream.video');

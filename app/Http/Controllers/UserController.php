@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use \App\Http\Controllers\ClassController as ClassCtrl;
 use \App\Http\Controllers\LearnController as LearnCtrl;
+use \App\Http\Controllers\EmailController as EmailCtrl;
 use \App\Http\Controllers\PayoutController as PayoutCtrl;
 use \App\Http\Controllers\MaterialController as MaterialCtrl;
 
@@ -70,9 +71,14 @@ class UserController extends Controller
             'email' => $req->email,
             'password' => bcrypt($req->password),
             'photo' => 'default.jpg',
-            'status' => 1,
+            'status' => 0,
             'is_mentor' => 0,
             'class_list' => '[]',
+        ]);
+
+        $mailVerification = EmailCtrl::completeRegistration([
+            'name' => $req->name,
+            'email' => $req->email,
         ]);
 
         $showName = explode(" ", $req->name)[0];
@@ -83,9 +89,24 @@ class UserController extends Controller
         $showName = Session::get('showName');
         return view('user.successRegister')->with(['showName' => $showName]);
     }
+    public function activate($email) {
+        $email = base64_decode($email);
+        $user = User::where('email', $email);
+        if($user->get()->count() == 0) {
+            return "404 User not found";
+        }
+        $activateUser = $user->update(['status' => 1]);
+        $user = $user->first();
+        $showName = explode(" ", $user->name)[0];
+        return view('user.activate')->with([
+            'showName' => $showName,
+            'name' => $user->name,
+        ]);
+    }
     public function indexPage() {
         $myData = $this->me();
         $featuredClass = ClassCtrl::allFeatured();
+        
         return view('index')->with([
             'myData' => $myData,
             'featuredClass' => $featuredClass,
