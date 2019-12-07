@@ -146,20 +146,17 @@ class ClassController extends Controller
     }
     public function detail($id) {
         $dataToPass = [];
-        // $dataToPass = [
-        //     'classData' => $kelas,
-        //     'myData'    => $myData,
-        //     'materials' => $materials,
-        //     'isJoined'  => $isJoined,
-        //     'isPaid'    => $isPaid,
-        // ];
-
+        
         $myData     = UserCtrl::me();
+        $dataToPass['myData'] = $myData;
+        
         if(UserCtrl::isLoggedIn()) {
             $myClasses  = explode(",", $myData->class_list);
 
             if(in_array($id, $myClasses)) {
                 $materials = MateriCtrl::getAvailableToBuy($myData, $id);
+            }else {
+                $materials = MateriCtrl::getMaterialClass($id);
             }
         }else {
             $materials = MateriCtrl::getMaterialClass($id);
