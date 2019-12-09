@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
-    public function completeRegistration() {
+    public static function completeRegistration() {
         $props = [
             'email' => 'riyan.satria.619@gmail.com',
             'name' => 'Riyan Satria',
