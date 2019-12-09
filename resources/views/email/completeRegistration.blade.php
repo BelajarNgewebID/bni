@@ -9,7 +9,7 @@
             Sebelum kamu mulai belajar bikin website, kamu harus mengaktifkan akun kamu dulu dengan mengklik tombol yang ada di bawah ini. Setelah itu baru kamu bisa
             belajar membuat sebuah website yang canggih banget
             <br /><br />
-            <button>Aktifkan Akun</button>
+            <a href="{{ $link }}"><button>Aktifkan Akun</button></a>
             <br /><br />
             Dari Admin<br />
             Belajar Ngeweb ID
