@@ -33,7 +33,8 @@ class CompleteRegistration extends Mailable
     {
         $firstName = explode(" ", $this->name)[0];
         return $this->view('email.completeRegistration')->with([
-            'firstName' => $firstName
+            'firstName' => $firstName,
+            'link' => $this->linkVerification
         ]);
     }
 }
