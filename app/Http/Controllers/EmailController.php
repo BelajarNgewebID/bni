@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
-    public static function completeRegistration() {
-        $props = [
-            'email' => 'riyan.satria.619@gmail.com',
-            'name' => 'Riyan Satria',
-            'link' => 'haha'
+    public static function completeRegistration($props) {
+        $propsToPass = [
+            'email' => $props['email'],
+            'name' => $props['name'],
+            'link' => route('user.activate', base64_encode($props['email']))
         ];
-        Mail::to($props['email'])->send(new CompleteRegistration($props));
+        Mail::to($propsToPass['email'])->send(new CompleteRegistration($propsToPass));
 
         return "email was sent";
     }
