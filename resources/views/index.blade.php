@@ -32,7 +32,7 @@
                     <div class="wrap">
                         <h3>{{ $class->kelas->title }}</h3>
                         <p class="text-muted author">
-                            <img src="{{ asset('img/iconsBni.png') }}" class="fotoProfilKecil ke-kiri mr-2">
+                            <img src="{{ asset('storage/avatars/'.$class->kelas->users->photo) }}" class="fotoProfilKecil ke-kiri mr-2">
                             oleh <b>{{ $class->kelas->users->name }}</b>
                         </p>
                     </div>

@@ -91,11 +91,15 @@
                         <div class="mt-1 teks-transparan">{{ toIdr($item->price) }}</div>
                     </div>
                 @endforeach
-                <form id="formOrder" action="{{ route('kelas.join', $classData->id) }}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" id="selectedMaterial" name="selectedMaterial">
-                    <button type="button" id="btnBuy" class="lebar-100">Beli Materi</button>
-                </form>
+                @if (Auth::guard('user')->check())
+                    <form id="formOrder" action="{{ route('kelas.join', $classData->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" id="selectedMaterial" name="selectedMaterial">
+                        <button type="button" id="btnBuy" class="lebar-100">Beli Materi</button>
+                    </form>
+                @else
+                    <h3 class="teks-gelap rata-tengah mt-4">Login dulu sebelum mulai belajar</h3>
+                @endif
                 @if ($isJoined)
                     <a href="{{ route('learn.start', [$classData->id, 1]) }}">
                         <button class="lebar-100 mt-2 primer">Lihat materi yang kamu punya</button>
